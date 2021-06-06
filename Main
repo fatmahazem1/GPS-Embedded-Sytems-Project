@@ -1,1 +1,8 @@
-
+int main()
+{
+	SCB->CPACR |=((3UL<<10*2)|(3UL<<11*2));
+	/*double latdeg1 = 51.5007;
+    double longdeg1 = 0.1246;
+    double latdeg2 = 40.6892;
+    double longdeg2 = 74.0445;
+    double dis;*/

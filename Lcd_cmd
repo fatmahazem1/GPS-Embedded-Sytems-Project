@@ -1,1 +1,10 @@
-
+void LCD_Cmd(unsigned char command)
+{
+    LCD_Write_Nibble(command & 0xF0, 0);   /* Write upper nibble to LCD */
+    LCD_Write_Nibble(command << 4, 0);     /* Write lower nibble to LCD */
+    
+    if (command < 4)
+        delay_ms(2);         /* 2ms delay for commands 1 and 2 */
+    else
+        delay_us(40);        /* 40us delay for other commands */
+}

@@ -1,1 +1,4 @@
-
+long double torad (long double degree){
+   long double rad = degree/(180/(22/7));
+    return rad;
+}

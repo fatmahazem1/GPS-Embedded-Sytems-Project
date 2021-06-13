@@ -1,1 +1,9 @@
-
+void LCD_string(char *str) // to print string (pointer to elements of array of char)
+{
+    int i;
+    for(i=0;str[i]!=0;i++)  /* Send each char of string  */
+    {
+        LCD_char(str[i]);  /* Call LCD data write */
+        delay_ms(20);
+    }
+}

@@ -1,6 +1,0 @@
-void LCD_Write_Char(unsigned char data)
-{
-    LCD_Write_Nibble(data & 0xF0, RS);    /* Write upper nibble to LCD and RS = 1 to write data */
-    LCD_Write_Nibble(data << 4, RS);      /* Write lower nibble to LCD and RS = 1 to write data */
-    delay_us(40);
-}

@@ -1,1 +1,11 @@
 
+void LCD_separating_double(double deci)
+{
+    int integer_part=deci;
+    int decimal_part=(deci - integer_part)*100000;
+
+    LCD_integers(integer_part);
+    LCD_char('.');
+    LCD_integers(decimal_part);
+}
+

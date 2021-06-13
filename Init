@@ -1,31 +1,67 @@
-/* LCD and GPIOB initialization Function */ 
-void init(void)
+void init()
 {
- SYSCTL->RCGCGPIO |= 0x01; 
-	SYSCTL->RCGCGPIO |= 0x02;
-	/* Enable Clock to GPIOB */
-	LCD_CTRL->DIR |= 0xE0;
-	LCD_CTRL->DEN |= 0xE0;
- LCD_DATA->DIR |=0xFF; /* Set GPIOB all pins a digital output pins */
- LCD_DATA->DEN |=0xFF; /* Declare GPIOB pins as 
-	pins */
+    volatile uint32_t delay;
 
- LCD_Cmd(Set5x7FontSize);  /* select 5x7 font size and 2 rows of LCD */
- LCD_Cmd(Function_set_4bit); /* Select 4-bit Mode of LCD */
- LCD_Cmd(moveCursorRight); /* shift cursor right */
- LCD_Cmd(clear_display); /* clear whatever is written on display */
- LCD_Cmd(cursorBlink);  /* Enable Display and cursor blinking */
-//uint32_t delay;
-SYSCTL_RCGCGPIO_R  |= 0x20;
-//delay = 1;  //dummy var
-GPIO_PORTF_LOCK_R = 0x4C4F434B;
-GPIO_PORTF_CR_R = 0x1F;
-GPIO_PORTF_AFSEL_R = 0;
-GPIO_PORTF_PCTL_R = 0;
-GPIO_PORTF_AMSEL_R = 0;
-GPIO_PORTF_DIR_R = 0x0E;
-GPIO_PORTF_DEN_R = 0x1F;
-GPIO_PORTF_PUR_R = 0x11;
- 
+    SYSCTL_RCGCGPIO_R |=0x03;    //clock register for ports A B
+    delay=1;
+
+    GPIO_PORTA_LOCK_R=0x4C4F434B;   //lock for ports A B
+    GPIO_PORTA_CR_R=0xE0;
+    //GPIO_PORTB_LOCK_R=0x4C4F434B;
+    GPIO_PORTB_CR_R=0xFF;
+
+
+    GPIO_PORTA_AFSEL_R=0;       //initializing portA  5 6 7
+    GPIO_PORTA_PCTL_R=0;
+    GPIO_PORTA_AMSEL_R=0;
+    GPIO_PORTA_DIR_R|=0xE0;
+    GPIO_PORTA_DEN_R|=0xE0;
+    GPIO_PORTA_PUR_R=0;
+    GPIO_PORTB_AFSEL_R=0;       //initializing portB pins 0-8 for LCD
+    GPIO_PORTB_PCTL_R=0;
+    GPIO_PORTB_AMSEL_R=0;
+    GPIO_PORTB_DIR_R=0xFF;
+    GPIO_PORTB_DEN_R=0xFF;
+    GPIO_PORTB_PUR_R=0;
+
+
+
+
+        SYSCTL_RCGCUART_R |=0x0020;    // ACTIVATE UART5
+        SYSCTL_RCGCGPIO_R |=0x0010;    // enable the clock of port E4,5
+
+        UART5_CTL_R &=~(0x01);
+        UART5_IBRD_R =104;
+        UART5_FBRD_R =11;
+        UART5_LCRH_R |=0x0070;
+        UART5_CTL_R |=0X0301;
+
+        GPIO_PORTE_DEN_R |=0x0030;      // D    E4,5
+        GPIO_PORTE_AMSEL_R &=~0x0030;       //  D
+        GPIO_PORTE_AFSEL_R |=0x0030;
+      GPIO_PORTE_PCTL_R =(GPIO_PORTE_PCTL_R&0xFF00FFFF)+0x00110000;           // working I/O ports OR UART
+
+
+    delay_ms(20);
+    LCD_command(0x38);
+    delay_us(50);
+    LCD_command(0x0F);
+    delay_ms(50);
+    LCD_command(0x06);
+    delay_ms(50);
+    LCD_command(0x01);
+    delay_ms(25);
+
+
+    SYSCTL_RCGCGPIO_R |=0x20;    // enable the clock of port
+    delay=1;
+    GPIO_PORTF_LOCK_R=0x4C4F434B;
+    GPIO_PORTF_CR_R=0x1F;        // enable pins
+    GPIO_PORTF_DIR_R=0x0E;      // pin I/O  0/1
+    GPIO_PORTF_DEN_R=0x1F;      // D
+    GPIO_PORTF_AMSEL_R =0;      // A
+    GPIO_PORTF_AFSEL_R =0;
+    GPIO_PORTF_PCTL_R =0;       // working I/O ports OR UART
+    GPIO_PORTF_PUR_R=0x11;      // for switches
 }	
 

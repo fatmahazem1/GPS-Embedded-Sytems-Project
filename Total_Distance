@@ -1,1 +1,13 @@
-
+// Measuring the distance by longitude and latitude
+float Total_Distance(float long1, float long2, float lat1, float lat2)
+{
+    float dlong = deg_to_rad(long2 - long1);
+    float dlat  = deg_to_rad(lat2 - lat1);
+    float phi1 = deg_to_rad(lat1);
+    float phi2 = deg_to_rad(lat2);
+    // Haversine formula
+    float a = pow(sin((0.5 * dlat)), 2) + cos(phi1) * cos(phi2) * pow(sin((0.5 * dlong)), 2);
+    float d = 2 * R * asin(sqrt(a));
+    Dis = Dis + d;
+    return Dis;
+}

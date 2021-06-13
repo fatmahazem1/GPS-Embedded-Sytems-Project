@@ -1,1 +1,4 @@
-
+// To convert from degrees to radian
+float deg_to_rad(float deg){
+    return (deg * PI / 180);
+}

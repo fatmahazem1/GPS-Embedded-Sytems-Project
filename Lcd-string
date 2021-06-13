@@ -1,8 +1,0 @@
-void  LCD_String (char *str)	// Send string to LCD function */
-{
-	int i;
-	for(i=0;str[i]!=0;i++)  /* Send each char of string till the NULL */
-	{
-		LCD_Write_Char(str[i]);  /* Call LCD data write */
-	}
-}
